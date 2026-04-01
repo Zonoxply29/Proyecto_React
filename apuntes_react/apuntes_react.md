@@ -352,3 +352,145 @@ y asi es como se actualiza embase a lo que se actualiza
 
 OJO : Si se actualiza algo que no se debe de actualizar o es muy pesado el Performance puede llegar a bajar 
 
+---
+## Que es un Bundler
+
+Cuando tenemos diferentes archivos imagenes, codigo etc archivos multimedia , empaquetar los archivos de el proyecto es lo que se le conoce como un Bundler
+
+
+- Webpack te deja configurar y administrar herramientas de optimización
+para empaquetar 
+
+- Vite Es un bundler que ayuda a hacerlo mucho mas rapido que webpack se encarga de manera automatica de hacer el bundling
+
+---
+
+## Como funciona Vite
+Vite tiene sus ventajas al momento de empaquetar
+
+- inicio Instantanio del Servidor -> ESM es la capacidad de los navegadores de importar archivos al navegador 
+
+Anteriormente no se podia hacer esto y se tenia que transpilar el código para que el navegador lo pudiera ocupar 
+
+Por eso Vite tiene esa ventaja al momento de iniciar o levantar nuestro servidor o proyecto
+
+- HMR (Hot Module Replacement) -> se refiere a cuando uno esta trabajando en un componente los cambios se ven de manera instantanea
+
+Si uno hace un cambio el estado de el componente es mantenido y no afecta a los demas , por lo cual ayuda a detectar errores 
+
+- Soporta Typescript, JSX y CSS
+
+- Crea un Bundler optimizado utiliando *"Rollup"* -> es un *"Module Bundler "* de JS es el encargado de servir todas las dependencias con *"Nodemodules"* en Vite
+
+## Diferencia de Vite a Webpack 
+
+- Cuando se tiene un proyecto creado con webpack normalmente se tienen las *rutas y modulos que importa* y todos ellos son compilados cuando inicia el servidor 
+
+- despues hace la *"compilacion o la transpilación"*
+
+- Y despues Genera el Bundler que despues es cargado en el navegador para cuando sea necesario 
+
+Esto es un proceso que se ocupa durante los ultimos años 
+
+## Lo que hace vite 
+
+Inicia el servidor y hace un "HTTP Request" solicita cierta pagina y esta pagina como esta utilizando modulos de *"ESM"* va y busca esa ruta y regresa esa pantalla en tiempo real la pantalla que se solicita
+
+
+## Como se carga un proyecto de REACT en un unico archivo HTML
+lo que pasa es que react al manejar los modulos lo unico que necesita es que lo conecte a un solo archivo html por eso solo tenemos uno para esa conexion desde el archivo `main.jsx` encontramos que obtiene el elemento del html con el id de *root* y desde ese lo ubica en el html y coloca el archivo `App.jsx`su contenido en el HTML obteniendo su id 
+
+
+## PROYECTO TICKETMASTER
+vamos a crear un buscador conectado a la API de Ticketmaster para buscar los eventos de algun artista
+
+## Estructura de Proyectos React
+
+*src* es la carpeta donde se va a ir guardando todos los elementos del proyecto 
+
+- creacion de la carpeta *components* para los componentes que sean reusables que se puedan ocupar en cualquier parte de la web 
+- de components puede ser : navbar, footer, buscador
+
+
+*views* o algunas personas le dicen *pages*
+- es donde van a ir las rutas o paginas del proyecto por ejemplo /events, entonces se vincularia con el componente de events
+
+*routes* guardar las rutas o configurar el ruteador del proyecto , si el proyecto escala o tenga mas caracteristicas complejas 
+
+*utils* se agregan todas las utilerias -> funciones que se puedan reutilizar en el proyecto o importarlas 
+
+*state* hace referencia a la informacion global de el proyecto a la informacion de la API o la estructura que viene de una API
+
+## Creacion de Primer Componete
+
+Se creo la Sub-Carpeta de el componente de Navbar esta porque es un componente que se va a reutilizar en otras vistas
+
+## Renderizado Condicional 
+
+Se utiliza para cuando los componentes mantienen cierta logica , para cuando queremos mostrar algo o no con una condicional
+se hace el uso de  `if`, `&&`, `? :`
+
+ ## El uso de null
+  Si se regresa null no va a mostrar el contenido que le estas colocando osea nada 
+
+```jsx
+if (isPacked) {
+  return null;
+}
+return <li className="item">{name}</li>;
+
+```
+
+Si `isPacked` es verdadero, el componente no devolverá nada, null. En caso contrario, devolverá JSX para ser renderizado.
+ 
+Tambien se podria ocupar para algun elemento que queramos poner de cargando o un loder
+
+
+## El uso de Operador Ternario Condicional
+Es una manera mas simple o corta de crear la condicional
+
+El codigo dice si la variable isPacked es verdadero me regresa el elemento con una palomita de lo contrario no lo regresa
+
+
+```jsx
+if (isPacked) {
+  return <li className="item">{name} ✅</li>;
+}
+return <li className="item">{name}</li>;
+
+```
+
+Se podria escribir asi
+
+```jsx
+return (
+  <li className="item">
+    {isPacked ? name + ' ✅' : name} 
+  </li>
+);
+```
+Se acorta y se escribe de una manera mas facil
+- la condicional dice 
+
+*si es packed es igual a true me regresa el nombre con la palomita si no me va a regresar solo el nombre*
+
+## Operador Lofico AND(&&)
+ 
+ Para el uso de este operador debemos de verificar que sea un valor *booleano* como en el siguiente caso 
+ si no es un booleano coloca un *0* y eso estaría mal 
+
+ Que hace la diferencia a un Operador ternario el código convive con el que ya tenemos, porque solo aplicaría
+ si vamos a mostrar algo que viva si o si con la otra condicional 
+
+ Si tenemos esta condicional con un elemento que no queremos mostrar se va a mostrar a la par de el elemento a condicionar
+
+```jsx
+return (
+  <li className="item">
+    {name} {isPacked && '✅'}
+  </li>
+);
+```
+*si isPacked, entonces (&&) renderiza la marca de verificación, si no, no renderiza nada.*
+
+
