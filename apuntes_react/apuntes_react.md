@@ -474,7 +474,7 @@ Se acorta y se escribe de una manera mas facil
 
 *si es packed es igual a true me regresa el nombre con la palomita si no me va a regresar solo el nombre*
 
-## Operador Lofico AND(&&)
+## Operador Logico AND(&&)
  
  Para el uso de este operador debemos de verificar que sea un valor *booleano* como en el siguiente caso 
  si no es un booleano coloca un *0* y eso estaría mal 
@@ -491,6 +491,143 @@ return (
   </li>
 );
 ```
-*si isPacked, entonces (&&) renderiza la marca de verificación, si no, no renderiza nada.*
+*si isPacked, entonces (&&) renderiza la marca de verificación, si no, no renderiza nada.”*
 
+## Renderizado de Listas 
 
+Cuando se hace el uso de una API o información dentro de un arreglo y se quiere colocar o convertir en alguno de nuestros componentes , debemos de hacer un *renderizado dinamico*
+
+Para iterrar los elementos de nuestro arreglo se ocupa `map`
+
+Para mostrar informacion en un listado de elemnentos cuando vienen de una API o el usuario empiece a nutrir de información
+
+- Mover los datos en un array es lo primero que se debe de hacer
+
+```jsx
+
+const people = [
+  'Creola Katherine Johnson: matemática',
+  'Mario José Molina-Pasquel Henríquez: químico',
+  'Mohammad Abdus Salam: físico',
+  'Percy Lavon Julian: químico',
+  'Subrahmanyan Chandrasekhar: astrofísico'
+];
+
+```
+---
+
+- Mapea los miembros de people en un nuevo array de nodos JSX, listItems:
+
+El mapign puede ir directamente en la constante o tambien en el render de el componente 
+
+```jsx
+
+const listItems = people.map(person => <li>{person}</li>);
+
+```
+* Se hace uso de el callback para person devuelva los elementos o item
+
+Un problema comun que aparece es que *cada uno de los elementos se les tiene asignar un atributo key*
+
+La manera correcta de agregar una key a cada componente se debe de hacer una concatenacion y colocar un nombre que distinga que es lo que se esta trabajando que datos en este caso como son nombre de personas se coloco
+
+```jsx
+
+const listItems = people.map(person => <li key ={`array-people-item-${people}`}>{person}</li>);
+
+```
+la key siempre tiene que ir si no se va a comportar de mala manera nuestros datos
+
+---
+
+- Devuelve listItems desde tu componente envuelto en un <ul>:
+```jsx
+
+return <ul>{listItems}</ul>;
+
+```
+
+## Filtrar ARRAYS DE OBJETOS o JSON
+
+```jsx
+
+const people = [{
+  id: 0,
+  name: 'Creola Katherine Johnson',
+  profession: 'matemática',
+}, {
+  id: 1,
+  name: 'Mario José Molina-Pasquel Henríquez',
+  profession: 'químico',
+}, {
+  id: 2,
+  name: 'Mohammad Abdus Salam',
+  profession: 'físico',
+}, {
+  id: 3,
+  name: 'Percy Lavon Julian',
+  profession: 'químico',  
+}, {
+  id: 4,
+  name: 'Subrahmanyan Chandrasekhar',
+  profession: 'astrofísico',
+}];
+
+```
+Debemos de crear para este caso de la misma forma pasada solo que al ser un objeto accedemos a los elementos de esta manera 
+```jsx
+
+const peopleItems = people.map((person => <li key ={`array-person-item-${person.id}`}>${person.id : person.name}</li>);
+
+```
+
+## MANEJANDO EVENTOS (EVENT HANDLER)
+
+Los controladores de eventos son tus propias funciones que se ejecutarán en respuesta a interacciones como hacer clic, hover, enfocar inputs en formularios, entre otras.
+
+```jsx
+
+export default function Button() {
+  function handleClick() {
+    alert('¡Me hiciste clic!');
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Hazme clic
+    </button>
+  );
+}
+
+```
+La manera correcta de pasar el nombre de la funcion debe de ser de la forma que viene en el ejemplo
+
+- Es incorrecto si se llama de la siguiente manera
+```jsx
+
+<button onClick={handleClick()}>
+
+```
+Si hacemos esto nos estaria llamando infinitas veces a la funcion y por ende se trabaria el sitio
+
+- Para cuando se escriba codigo en linea lo correcto es 
+```jsx
+<button onClick={() => alert('...')}>
+
+```
+- Lo incorrecto y que provocaria que cada vez que se renderize el componente se trabe seria esto
+```jsx
+<button onClick={alert('...')}>
+
+```
+
+## Pasando Eventos como Props
+Cuando los nombres de los EVENTOS sean mandados por propiedad empiecen por el prefijo oN (Onclick,OnEvent) como buena practica
+
+> [!TIP]
+No es mala practica pasar el evento como propiedad 
+
+## Event Bumbling
+Nos referimos  en casos donde tengamos anidados algunos eventos un evento en un elemento hijo , ese evento suve hacia sus elementos padres provocando una "Propagación"
+
+para evitar esto existe una forma para que no suceda
