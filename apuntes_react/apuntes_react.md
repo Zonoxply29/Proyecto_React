@@ -624,10 +624,404 @@ Si hacemos esto nos estaria llamando infinitas veces a la funcion y por ende se 
 ## Pasando Eventos como Props
 Cuando los nombres de los EVENTOS sean mandados por propiedad empiecen por el prefijo oN (Onclick,OnEvent) como buena practica
 
-> [!TIP]
-No es mala practica pasar el evento como propiedad 
+> **TIP:** No es mala practica pasar el evento como propiedad.
 
 ## Event Bumbling
 Nos referimos  en casos donde tengamos anidados algunos eventos un evento en un elemento hijo , ese evento suve hacia sus elementos padres provocando una "Propagación"
 
 para evitar esto existe una forma para que no suceda
+
+## CREACION DE FORMULARIO 
+- FORMULARIO BASICO USANDO UseState para su creación
+```jsx
+import { useState } from "react";
+
+const SignupForm = () => {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [address, setAddress] = useState('');
+    const [zipcode, setZipcode] = useState('');
+    const [phone, setPhone] = useState('');
+
+    const handleClearClick = () => {
+        setName('');
+        setAge('');
+        setAddress('');
+        setZipcode('');
+        setPhone('');
+    }
+    const handleSubmitForm = (event) => {
+        event.preventDefault();
+
+        console.log('submit', {
+            name, age, zipcode, phone, address
+        });
+    }
+
+    return (
+        <form onSubmit={handleSubmitForm}>
+            <label>
+                Name
+                <input value={name} onChange={(event) => setName(event.target.value)} required />
+            </label>
+            <label>
+                Age
+                <input value={age} onChange={(event) => setAge(event.target.value)} required />
+            </label>
+            <label>
+                Address
+                <input value={address} onChange={(event) => setAddress(event.target.value)} required />
+            </label>
+            <label>
+                ZipCode
+                <input value={zipcode} onChange={(event) => setZipcode(event.target.value)} required />
+            </label>
+            <label>
+                Phone
+                <input value={phone} onChange={(event) => setPhone(event.target.value)} required />
+            </label>
+            <div>
+                <button type="button" onClick={handleClearClick}>
+                    Clear
+                </button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    );
+}
+
+export default SignupForm;
+
+```
+
+Solo se importa el componente y listo 
+
+---
+
+## Dependencias para el Manejo de Formularios
+React Hook form fue la que se utilizo para la creacion de este proyecto
+Ya no se tiene que hacer la parte del SET STATE O ONCHANGE
+La libreria lo hace detras por nosotros
+
+- Formulario usando la libreria React Hook Form
+```jsx
+
+import { useForm } from "react-hook-form"
+
+const SignupForm = () => {
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
+
+    const handleClearClick = () => {
+        // ya hace la funcion de borrar los datos del formulario 
+        reset();
+    }
+    const handleSubmitForm = (data) => {
+        console.log(data)
+    }
+    // visualizar los errores que se tengan para esto se esta ocupando el requiered como objeto y asi los guarda en errors
+    console.log(errors)
+
+    return (
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
+            <label>
+                Name
+                <input {...register('name', { required: true })} />
+            </label>
+            <label>
+                Age
+                <input {...register('age', { required: true })} />
+            </label>
+            <label>
+                Address
+                <input {...register('address', { required: true })} />
+            </label>
+            <label>
+                ZipCode
+                <input {...register('zipcode', { required: true })} />
+            </label>
+            <label>
+                Phone
+                <input {...register('phone', { required: true })} />
+            </label>
+            <div>
+                <button type="button" onClick={handleClearClick}>
+                    Clear
+                </button>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    );
+}
+
+export default SignupForm;
+
+```
+## QUE ES UN HOOK o los HOOKS (USE EFECT, USE STATE)
+
+Los hooks son *funciones* que  permiten reutilizar o compartir logica , estado , o cualquier funcion que realice algun calculo entre varios componentes
+
+Permite reutilizar logica "encapsularla" y mandarla a llamar en donde se utiliza
+
+```jsx
+// import {useState} from 'react'
+
+  const useState = (value) =>{
+
+    const getter = () => value;
+
+    const setter = () => {}
+    
+    return [getter(),setter];
+  }
+  
+const [value, setValue] = useState(0);
+
+console.log(value,setValue)
+```
+Es una funcion que retorna funciones, valores, objetos retorna cualquier tipo de dato para ser utilizado en componentes propios o de el lenguaje 
+
+- Hooks de React js
+
+- State Hooks (Hooks de Estado)
+Implementación breve: Se usa `useState(valorInicial)` para crear un estado local y su setter dentro del componente.
+```jsx
+function ImageGallery() {
+  const [index, setIndex] = useState(0);
+}
+```
+
+- Context Hooks (Hooks de Contexto)
+Implementación breve: Se usa `useContext(MiContexto)` para leer valores globales sin pasarlos por props.
+```jsx
+function Button() {
+  const theme = useContext(ThemeContext);
+}
+```
+
+- Ref Hooks (Hooks de Referencia)
+Implementación breve: Se usa `useRef(valorInicial)` para guardar referencias a nodos DOM o valores persistentes sin re-render.
+```jsx
+function Form() {
+  const inputRef = useRef(null);
+}
+```
+
+- Effect Hooks (Hooks de Efecto)
+Implementación breve: Se usa `useEffect(() => {}, [deps])` para ejecutar efectos secundarios y su limpieza.
+```jsx
+function ChatRoom({ roomId }) {
+  useEffect(() => {
+    const connection = createConnection(roomId);
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId]);
+}
+```
+
+- Performance Hooks (Hooks de Rendimiento)
+Implementación breve: Se usa `useMemo` o `useCallback` para memorizar cálculos o funciones y evitar trabajo innecesario.
+```jsx
+function TodoList({ todos, tab }) {
+  const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
+}
+```
+
+## Reglas de los Hooks
+- Los hooks son llamados en la parte superior de nuestro componente 
+- Llamar a hooks solo en funciones de react, en un componente de react no se pueden ocupar en funciones tradicionales o funciones felcha 
+- Tampoco se pueden llamar de manera de condicional 
+- Todo lo que este fuera de el scope de el componente no lo va a tomar
+
+## Como funciona UseEffect
+Solo es llamada en una ocasion , se utiliza para ejecutar ciertos cambios cuando ciertos argumentos cambien , cuando uno de ellos cambie manda a hacer la accion
+
+> **TIP:** Para colocarlos debemos de mantener la buena practica de colocarlos arriba como en el ejemplo.
+```jsx
+import { useState , useEffect } from "react";
+
+const Navbar = ({onSearch}) =>{
+
+    // cuando el usuario da enter el metodo de onsearch se actualiza de el padre al hijo de la funcion 
+    useEffect(()=>{
+        console.log('On Search Cambio');
+    },[search,onSearch])
+
+     useEffect(()=>{
+        console.log('Componente Listo');
+    },[onSearch])
+
+    useEffect(()=>{
+        console.log('Search Cambio');
+    },[search])
+
+  }
+
+```
+Y al momento de ejecutarlos se puede ver en consola como cada uno se va llamando por cada componente y lo actualiza
+
+## Uso de UseEffect
+- llamadas a la API
+- Conexiones a otras librearias o sistemas de terceros 
+- Quitar instancias que se han generado 
+
+## Que son las Ref (useRef)
+
+Sirve para referencias algo , se puede referenciar valores, funciones, objetos o pasar a los demas decendientes 
+
+Una de sus ventajas es que sirve para cuando queremos actualizar un valor pero no queremos que se actualice el componente 
+a diferencia de un useState que renderiza de nuevo el componente
+
+O una fuga de re-renderings
+
+En pocas palabras ayuda a que no se haga un reendereo y la referencia sea la unica que se actualice no un rendereo completo de el componente
+
+```jsx
+import { useRef } from 'react';
+
+export default function Counter() {
+  let ref = useRef(0);
+
+  function handleClick() {
+    ref.current = ref.current + 1;
+    alert('You clicked ' + ref.current + ' times!');
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Click me!
+    </button>
+  );
+}
+
+```
+## La diferencia de ref y state
+
+Al usar useRef() se manda a llamar por el valor inicial tal como como useState()
+
+- Use State() -> Regresa un *arreglo* con el getter y el setter
+
+- useRef() -> Regresa un *OBJETO*  con {current: *"valor de la primera estancia"*}
+
+> **IMPORTANTE:** Las referencias no actualizan ni re-renderean el componente.
+
+Las referncias son mutables 
+- Los use state no puede ser actualizado directamente , necesita ser actualizado por su función setter
+
+- referencias no se pueden LEER NI Escribir cuando esta el proceso de renderizado, fuera de las funciones
+
+- el estado se puede leer en cualquier momento incluso cuando se renderea dentro de el componente
+
+## forwardRef
+
+`forwardRef` permite que un componente padre obtenga una referencia (`ref`) a un elemento hijo (normalmente un nodo DOM como input, button, div), aun cuando ese elemento esté encapsulado en un componente personalizado.
+
+### ¿Para que escenarios se ocupa?
+
+- Enfocar un input desde el padre (ejemplo: abrir modal y poner foco automatico).
+- Hacer scroll hacia una seccion especifica de un componente hijo.
+- Integrar librerias externas que necesitan acceso directo al DOM.
+- Disparar acciones imperativas puntuales como `focus()`, `select()` o `scrollIntoView()`.
+
+### Implementacion breve
+
+1. En el hijo se envuelve el componente con `forwardRef`.
+2. Se recibe `ref` como segundo parametro.
+3. Ese `ref` se conecta al elemento DOM real.
+4. En el padre se crea `useRef` y se lo pasa al componente hijo.
+
+```jsx
+import { forwardRef, useRef } from 'react';
+
+const CustomInput = forwardRef(function CustomInput(props, ref) {
+  return <input ref={ref} {...props} />;
+});
+
+function Parent() {
+  const inputRef = useRef(null);
+
+  const handleFocus = () => {
+    inputRef.current?.focus();
+  };
+
+  return (
+    <>
+      <CustomInput ref={inputRef} placeholder="Escribe aqui" />
+      <button onClick={handleFocus}>Enfocar input</button>
+    </>
+  );
+}
+```
+
+### Buena practica
+
+No se recomienda usar `forwardRef` para pasar datos de negocio. Para eso usa `props`, estado o contexto.
+Usalo solo cuando necesites control imperativo del DOM.
+
+---
+## UseImperativeHandle
+En el ejemplo de el proyecto con esto nos esta ayudando a devolver el valor dentro de el input ya no solo el div si no el valor dentro.
+
+Tambien las referencias con el uso del UseImperativeHandle sirve para crear componentes reutilizables.
+
+Implementacion simple en tu caso:
+- `forwardRef` permite que el padre tenga acceso al hijo.
+- `useImperativeHandle` decide que cosas del hijo se exponen al padre.
+- En tu `Navbar` expones `search` y `setSearch` para usarlos desde el componente padre.
+
+```jsx
+import { useState, forwardRef, useImperativeHandle } from "react";
+
+const Navbar = forwardRef(({ onSearch }, ref) => {
+  const [search, setSearch] = useState('');
+
+  useImperativeHandle(ref, () => ({
+    search,
+    setSearch
+  }));
+
+  const handleInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      onSearch(search);
+    }
+  };
+
+  return (
+    <input
+      value={search}
+      onChange={(event) => setSearch(event.target.value)}
+      onKeyDown={handleInputKeyDown}
+      placeholder="Busca tu evento Favorito"
+    />
+  );
+});
+```
+
+Uso desde el padre (sencillo):
+
+```jsx
+import { useRef } from "react";
+
+function Events() {
+  const navbarRef = useRef(null);
+
+  const limpiarBusqueda = () => {
+    navbarRef.current?.setSearch('');
+  };
+
+  const verValorActual = () => {
+    console.log(navbarRef.current?.search);
+  };
+
+  return (
+    <>
+      <Navbar ref={navbarRef} onSearch={(value) => console.log(value)} />
+      <button onClick={limpiarBusqueda}>Limpiar</button>
+      <button onClick={verValorActual}>Ver valor</button>
+    </>
+  );
+}
+```
+
+> **TIP:** Mantenlo para acciones puntuales de UI. Para flujo normal de datos, sigue usando props y estado.
+

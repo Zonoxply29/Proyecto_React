@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState} from "react";
 import EventItem from "./components/EventItem";
 import eventsJSON from "../../data/events.json"
 
