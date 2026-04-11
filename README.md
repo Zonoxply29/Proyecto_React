@@ -624,8 +624,7 @@ Si hacemos esto nos estaria llamando infinitas veces a la funcion y por ende se 
 ## Pasando Eventos como Props
 Cuando los nombres de los EVENTOS sean mandados por propiedad empiecen por el prefijo oN (Onclick,OnEvent) como buena practica
 
-> [!TIP]
-No es mala practica pasar el evento como propiedad 
+> **TIP:** No es mala practica pasar el evento como propiedad.
 
 ## Event Bumbling
 Nos referimos  en casos donde tengamos anidados algunos eventos un evento en un elemento hijo , ese evento suve hacia sus elementos padres provocando una "Propagación"
@@ -837,8 +836,7 @@ function TodoList({ todos, tab }) {
 ## Como funciona UseEffect
 Solo es llamada en una ocasion , se utiliza para ejecutar ciertos cambios cuando ciertos argumentos cambien , cuando uno de ellos cambie manda a hacer la accion
 
-> [!TIP]
-Para colocarlos debemos de mantener la buena Practica de Colocarlos Arriba como en el ejemplo
+> **TIP:** Para colocarlos debemos de mantener la buena practica de colocarlos arriba como en el ejemplo.
 ```jsx
 import { useState , useEffect } from "react";
 
@@ -856,6 +854,8 @@ const Navbar = ({onSearch}) =>{
     useEffect(()=>{
         console.log('Search Cambio');
     },[search])
+
+  }
 
 ```
 Y al momento de ejecutarlos se puede ver en consola como cada uno se va llamando por cada componente y lo actualiza
@@ -903,8 +903,7 @@ Al usar useRef() se manda a llamar por el valor inicial tal como como useState()
 
 - useRef() -> Regresa un *OBJETO*  con {current: *"valor de la primera estancia"*}
 
-> [!IMPORTANT]
-Las referencias NO ACTUALIZAN NI RE-RENDEREAN EL COMPONENTE
+> **IMPORTANTE:** Las referencias no actualizan ni re-renderean el componente.
 
 Las referncias son mutables 
 - Los use state no puede ser actualizado directamente , necesita ser actualizado por su función setter
@@ -1024,6 +1023,5 @@ function Events() {
 }
 ```
 
-> [!TIP]
-Mantenlo para acciones puntuales de UI. Para flujo normal de datos, sigue usando props y estado.
+> **TIP:** Mantenlo para acciones puntuales de UI. Para flujo normal de datos, sigue usando props y estado.
 
