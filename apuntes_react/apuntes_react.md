@@ -1025,3 +1025,116 @@ function Events() {
 
 > **TIP:** Mantenlo para acciones puntuales de UI. Para flujo normal de datos, sigue usando props y estado.
 
+---
+
+## Estilos en React
+
+- Estilos en Linea o directamente en el RENDER
+
+Para agregar los estilos se ocupa la etiqueta style con los estilos colocandolos dentro de un objeto para este caso
+
+- Este seria un ejemplo de como agregar los estilos para el caso del navbar de este proyecto son directamente en el objeto que tenemos para estilos
+
+```jsx
+ return (
+        <div ref={ref} style={{
+            marginBottom: 14,
+            marginTop : 20,
+            width: '100%',
+            display: 'flex',
+        }}>
+            <div style={{flex: 1, display: 'flex'}}>
+                <p style={{
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                }}>Mi boletera</p>
+            </div>
+            <div style={{flex: 1, alignItems: 'center',justifyContent:'flex-end'}}>
+                <input placeholder="Busca tu evento Favorito"
+                    onChange={handleInputChange}
+                    onKeyDown={handleInputKeyDown}
+                    value={search}
+                    style={{
+                        fontSize : 16,
+                        padding : '6px 12px',
+                        borderRadius: 4,
+                        border: 'none',
+                        width: 200
+                    }}
+                >
+                </input>
+            </div>
+        </div>
+    );
+```
+
+- Estilizar el listado de eventos
+Para eso se crean las carpetas porque en cierto grado vamos a tener mas estilos que componentes entoncesel uso de estilos directamente a los componentes puede ser una mala practica y algo engorrioso
+
+- Se opta mejor por crear dentro de cada carpeta de componente un archivo style que es puro css para su modificacion como en este caso la carpeta de "components/Eventitem"
+
+- importar un archivo de css tan solo es colocar la ruta de donde se esta importando dentro de nuestro modulo 
+```jsx
+import './styles.css'
+```
+- OCUPAR MODULOS DE CSS 
+- A diferencia de la conexion comun de el archivo de css aqui se debe de agregar la terminologia "module" y es la manera de importarlo
+
+```jsx
+import styles from './Eventitem.module.css'
+```
+- Y como buena practica se debe de nombrar las clases con "CamelCase"
+```css
+.eventItemContainer{
+    display: flex;
+    margin: 24px 0px;
+}
+.eventInfoContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: 14px;
+}
+.eventName{
+    margin: 0;
+    font-size: 22px;
+}
+.eventInfo{
+    text-align: left;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+
+}
+
+.seeMoreBtn{
+    margin-top: 8px;
+}
+```
+- Esto se hace ya que al momento de ocuparlos directamente en el codigo de react se deben de nombrar de cierto modo
+
+- la manera de ocuparlos en nuestros elementos HTML debe de manejarlo como si fuera un objeto con el uso de "styles"
+```jsx
+return (
+        <div className={styles.eventItemContainer}>
+            <img src={image || ""} alt={name || "Evento"} width={200} height={200}></img>
+            <div className={styles.eventInfoContainer}>
+                <h4 className={styles.eventName}>{name}</h4>
+                <p className={styles.eventInfo}>{info || "Sin informacion disponible"}</p>
+                <button onClick={handleSeeMoreClick} className={styles.seeMoreBtn}>Ver mas</button>
+            </div>
+        </div>
+    );
+```
+SI queremos ocupar mas de una clase debemos de concatenarlas para que pueda usarse 
+```jsx
+return (
+        <div className={`${styles.eventItemContainer} ${styles.anotherContainer}`}>
+
+        </div>
+    );
+```
+la manera en que se acceda es esta y si en dado caso aun no existiera la clase colocaria que es 'undefined' hasta que la encuentre en el archivo styles.module.css
